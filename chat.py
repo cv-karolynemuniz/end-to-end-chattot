@@ -4,8 +4,8 @@ import ssl
 import streamlit as st 
 import random
 import json
-from sk.learn.feature_extraction.text import TfidfVectorizer
-from sk.learn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
     
 with open("intents.json", "r") as file:
     data = json.load(file)
