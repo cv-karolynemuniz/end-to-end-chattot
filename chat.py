@@ -26,9 +26,10 @@ clf = LogisticRegression(random_state=0, max_iter=10000)
 tags = []
 patterns = []
 for intent in intents:
-    tags.append(intent['tag'])
-    patterns.extend(intent["patterns"])
-    
+    for pattern in intent['patterns']:
+        tags.append(intent['tag'])
+        patterns.append(pattern)
+        
 #training model
 x = vectorizer.fit_transform(patterns)
 y = tags
@@ -38,9 +39,11 @@ clf.fit(x,y)
 def chatbot(input_text):
     input_text = vectorizer.transform([input_text])
     tag = clf.predict(input_text)[0]
-    if intent['tag'] == tag:
-        renponse = random.choice(intent['responses'])
-        return renponse
+    for intent in intents:
+        if intent['tag'] == tag:
+            response = random.choice(intent['responses'])
+            return response
+        return "I'm sorry, I don't undertand."
 
 counter = 0
 
@@ -60,5 +63,7 @@ def main():
             st.write("Thank you for chatting with me. Have a great day!")
             st.stop()
             
+print(len(patterns), len(tags))
+
 if __name__ == '__main__':
     main()
